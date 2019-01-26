@@ -21,25 +21,15 @@
   "author": "Luca Lindhorst <info@lucalindhorst.de>",
   "license": "MIT",
   "devDependencies": {
-    "@types/ffi": "^0.2.1",
     "@types/joi": "^14.3.0",
     "@types/node": "^10.12.18",
-    "@types/ref-array": "0.0.28",
-    "@types/ref-struct": "0.0.29",
-    "@types/ref-union": "0.0.28",
     "@types/usb": "^1.5.0",
     "@types/yamljs": "^0.2.30",
     "typescript": "^3.2.4"
   },
   "dependencies": {
-    "fastcall": "^0.2.6",
-    "ffi": "^2.3.0",
     "hid-handler": "file:hid-handler",
     "joi": "^14.3.1",
-    "ref-array": "^1.2.0",
-    "ref-struct": "^1.1.0",
-    "ref-union": "^1.0.1",
-    "robotjs": "^0.5.1",
     "sendinput": "^0.2.0",
     "usb": "^1.5.0"
   }
