@@ -21,12 +21,12 @@ Currently this can only be a batch command, however support for custom scripting
 1. Install NodeJS **v10**: Download it [here](https://nodejs.org/en/download/). Afterwards just install it, the installer should be self explanatory.
 2. Install macroMyKBD: Download the newest release from the [Release Page](http://github.com/lal12/macromykbd/releases) and unzip it whereever you like. For the next step open the folder containing the unzipped files.
 3. Download [Zadig](https://zadig.akeo.ie/) and execute it.
-    a. Plugin the keyboard you wish to configure, if it isn't already configured.
-    b. Click on Options->List All Devices
-    c. Choose your keyboard from the dropdown menu. If you are not sure which one is the right one, try to unplug it an see which one disappears.
-    d. Use the small arrows, to change the driver to be installed, you have to use ``WinUSB`.
-    e. Click on install driver. 
-    f. The first field next to `USB ID` is the vendor ID, the second one the product ID. You will need them when configuring, so write them down or just keep Zadig open.
+    - a. Plugin the keyboard you wish to configure, if it isn't already configured.
+    - b. Click on Options->List All Devices
+    - c. Choose your keyboard from the dropdown menu. If you are not sure which one is the right one, try to unplug it an see which one disappears.
+    - d. Use the small arrows, to change the driver to be installed, you have to use `WinUSB`.
+    - e. Click on install driver. 
+    - f. The first field next to `USB ID` is the vendor ID, the second one the product ID. You will need them when configuring, so write them down or just keep Zadig open.
 4. Now you should start to configure your actions: See section [action.yml](#action.yml) for more info on that. 
 5. Check if the `action.yml` works fine, by executing the `start.bat`, if no errors occur the config file is fine. Now you can test if it works as intended.
 6. Usually you want macroMyKBD to start when the system starts. There are several ways to do this, and there are plenty tutorials for this online. The easiest way is to create a shortcut to `start.bat` in the autostart folder.
