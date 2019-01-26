@@ -77,3 +77,4 @@ macroMyKBD will write some messages to the terminal window:
 - install driver automatically, so the manual driver installation via zadig isn't needed anymore
 - install as a service by itself, also start in background
 - device differentiation by serial number
+- Bundling for lesser files
