@@ -1,0 +1,3 @@
+[submodule "hid-handler"]
+	path = hid-handler
+	url = git://github.com/lal12/hid-handler.git
