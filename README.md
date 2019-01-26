@@ -18,7 +18,7 @@ Currently this can only be a batch command, however support for custom scripting
 
 ## Installation & Setup
 
-1. Install NodeJS: Download it [here](https://nodejs.org/en/download/). The Recommend version is v10, however other versions should work too. Afterwards just install it, the installer should be self explanatory.
+1. Install NodeJS **v10**: Download it [here](https://nodejs.org/en/download/). Afterwards just install it, the installer should be self explanatory.
 2. Install macroMyKBD: Download the newest release from the [Release Page](http://github.com/lal12/macromykbd/releases) and unzip it whereever you like. For the next step open the folder containing the unzipped files.
 3. Download [Zadig](https://zadig.akeo.ie/) and execute it.
     a. Plugin the keyboard you wish to configure, if it isn't already configured.
