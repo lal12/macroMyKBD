@@ -5,14 +5,14 @@ devices:
     passthrough: false
 actions:
   # starts a terminal window on pressing windows key + C down
-  - cmd: start cmd.exe
+  - cmd: 'start cmd.exe' # it is better to wrap the line into single quotes, to ensure special characters won't lead to troubles
     events: 
       - keys: [227, 6]
         on: 'down'
         only: true
         device: 1
   # starts a terminal window on releasing windows key + v
-  - cmd: start cmd.exe
+  - cmd: 'start cmd.exe' 
     events: 
       - keys: [227, 25]
         on: 'up'
