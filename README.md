@@ -18,7 +18,7 @@ Currently this can only be a batch command, however support for custom scripting
 
 ## Installation & Setup
 
-1. Install NodeJS **v10**: Download it [here](https://nodejs.org/en/download/). Afterwards just install it, the installer should be self explanatory.
+1. Install NodeJS **v10**: Download it [here](https://nodejs.org/dist/v10.17.0/node-v10.17.0-x64.msi). Afterwards just install it, the installer should be self explanatory.
 2. Install macroMyKBD: Download the newest release from the [Release Page](http://github.com/lal12/macromykbd/releases) and unzip it whereever you like. For the next step open the folder containing the unzipped files.
 3. Download [Zadig](https://zadig.akeo.ie/) and execute it.
     - a. Plugin the keyboard you wish to configure, if it isn't already configured.
@@ -31,12 +31,12 @@ Currently this can only be a batch command, however support for custom scripting
 5. Check if the `action.yml` works fine, by executing the `start.bat`, if no errors occur the config file is fine. Now you can test if it works as intended.
 6. Usually you want macroMyKBD to start when the system starts. There are several ways to do this, and there are plenty tutorials for this online. The easiest way is to create a shortcut to `start.bat` in the autostart folder.
 
-## action.yml
+## actions.yml
 
-The action.yml is the file containing the configuration, it is written in a format called YAML. 
+The actions.yml is the file containing the configuration, it is written in a format called YAML. 
 How YAML exactly works can be read in many online tutorials, an example file is included.
 
-If macroMyKBD is running, while editing `action.yml`, it needs to be restarted.
+If macroMyKBD is running, while editing `actions.yml`, it needs to be restarted.
 
 The action.yml containes one or multiple devices, each device has a name, a vendor id (`vendor`) and a product id (`prod`).
 You can define multiple macros (actions), a macro contains a command (`cmd`) just a string you also could execute on a command prompt.
