@@ -61,7 +61,7 @@ A **key press** (`press`) event does occur every time the keyboard is sending da
 ## Console output
 
 macroMyKBD will write some messages to the terminal window:
-- `up [ x ]`, will be printed any time a key is released `xxx` represents the key code.
+- `up [ x ]`, will be printed any time a key is released `x` represents the key code.
 - `down [ x ]`, same as above for pressing down a key.
 - `Running `..., is printed when a macro is executed.
 - `WARN - index:56 `..., can be ignored and will be removed at a later time.
