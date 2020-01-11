@@ -8,10 +8,11 @@ copy start.bat dist
 copy LICENSE.txt dist
 copy README.md dist
 
-call tsc --build server/tsconfig.json
-call tsc --build ui/tsconfig.json
-
-cd dist
+cd server
+call tsc
+cd ..\ui
+call tsc
+cd ..\dist
 
 @echo off
     setlocal enableextensions disabledelayedexpansion
