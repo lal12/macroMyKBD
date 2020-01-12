@@ -1,3 +1,6 @@
 [submodule "hid-handler"]
 	path = hid-handler
 	url = git://github.com/lal12/hid-handler.git
+[submodule "node-getkeystatebyscancode"]
+	path = node-getkeystatebyscancode
+	url = git://github.com/KGT1/node-getkeystatebyscancode.git
