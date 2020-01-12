@@ -188,10 +188,9 @@ export class Device{
                     loopfirstrun=false;
                 }
                 else
-                    await this.delay(50);
+                    await this.delay(40);
 
                 if(GetKeyStateByScancode(handled)<0){
-                    SendInput({type:1 as 1,val:handled,up:true});
                     SendInput({type:1 as 1,val:handled,up:false});
                 }
             }
