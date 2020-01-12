@@ -1,8 +1,10 @@
 import * as hidHandler from 'hid-handler';
 import { Action } from './action';
 import { SendInput } from 'sendinput';
+import { GetKeyStateByScancode } from 'getkeystatebyscancode';
 import { hid2codes, KeyCodes } from './hid_ps2';
 import { EventEmitter } from 'events';
+import { number } from 'joi';
 
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -167,15 +169,41 @@ export class Device{
         }).filter(k=>k!=null) as number[];
     }
 
-    
-    private passthroughKeys(ups: number[], downs: number[]){
-        ups = this.hid2ps2(ups);
-        downs = this.hid2ps2(downs);
-        //TODO: repeat pressed keys
+    private delay(ms: number) {
+        return new Promise( resolve => setTimeout(resolve, ms) );
+    }
+
+    async handleSendInput(ups: number[], downs: number[]) {
+        var continueTheLoop:Boolean=true;
+        var loopfirstrun:Boolean=true;
         SendInput([
             ...ups.map(k=>({type: 1 as 1, val: k, up: true})),
             ...downs.map(k=>({type: 1 as 1, val: k}))
         ])
+        var handled=downs[0];
+        if(handled>0){
+            while((GetKeyStateByScancode(handled)<0)){
+                if(loopfirstrun){
+                    await this.delay(420);
+                    loopfirstrun=false;
+                }
+                else
+                    await this.delay(50);
+
+                if(GetKeyStateByScancode(handled)<0){
+                    SendInput({type:1 as 1,val:handled,up:true});
+                    SendInput({type:1 as 1,val:handled,up:false});
+                }
+            }
+        }
+        
+    }
+
+    private passthroughKeys(ups: number[], downs: number[]){
+        ups = this.hid2ps2(ups);
+        downs = this.hid2ps2(downs);
+
+        this.handleSendInput(ups,downs);
     }
 }
 
