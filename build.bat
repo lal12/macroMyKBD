@@ -8,6 +8,8 @@ copy start.bat dist
 copy LICENSE.txt dist
 copy README.md dist
 
+robocopy node-getkeystatebyscancode dist\node-getkeystatebyscancode /E
+
 cd server
 call tsc
 cd ..\ui
