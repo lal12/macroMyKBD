@@ -18,6 +18,8 @@ Currently this can only be a batch command, however support for custom scripting
 
 ## Installation & Setup
 
+A quick Video-Tutorial is also available: https://youtu.be/k5ltJ_6T3qI (by @KGT1).
+
 1. Install NodeJS **v10**: Download it [here](https://nodejs.org/dist/v10.17.0/node-v10.17.0-x64.msi). Afterwards just install it, the installer should be self explanatory.
 2. Install macroMyKBD: Download the newest release from the [Release Page](http://github.com/lal12/macromykbd/releases) and unzip it whereever you like. For the next step open the folder containing the unzipped files.
 3. Download [Zadig](https://zadig.akeo.ie/) and execute it.
