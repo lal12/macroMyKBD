@@ -1,23 +1,23 @@
 export interface KeyCodes{
-    usb: number,
-    xkb: number|null,
-    win: number|null, 
-    mac: number|null,
-    desc1: string|null, 
-    desc2: string, 
-    desc3?: string
+	usb: number,
+	xkb: number|null,
+	win: number|null, 
+	mac: number|null,
+	desc1: string|null, 
+	desc2: string, 
+	desc3?: string
 }
 
 function arr2obj(arr: any[]): KeyCodes{
-    return {
-        usb: arr[0] as number,
-        xkb: arr[1] as number|null,
-        win: arr[2] as number|null,
-        mac: arr[3] as number|null,
-        desc1: arr[4] as string|null,
-        desc2: arr[5] as string,
-        desc3: arr[6] as string|undefined
-    };
+	return {
+		usb: arr[0] as number,
+		xkb: arr[1] as number|null,
+		win: arr[2] as number|null,
+		mac: arr[3] as number|null,
+		desc1: arr[4] as string|null,
+		desc2: arr[5] as string,
+		desc3: arr[6] as string|undefined
+	};
 }
 
 const codetable = [
@@ -229,22 +229,22 @@ const codetable = [
 const hid2codestable: any = {};
 // assign standard keys (in block 07)
 for(let c of codetable){
-    let usb = c[0] as number;
-    if( (usb>>16 & 0xFF) == 0x07){
-        hid2codestable[usb & 0xffff] = c;
-    }
+	let usb = c[0] as number;
+	if( (usb>>16 & 0xFF) == 0x07){
+		hid2codestable[usb & 0xffff] = c;
+	}
 }
 for(let c of codetable){
-    let usb = c[0] as number;
-    let ind = usb & 0xffff;
-    if(!hid2codestable[ind]){
-        hid2codestable[ind] = c;
-    }
+	let usb = c[0] as number;
+	let ind = usb & 0xffff;
+	if(!hid2codestable[ind]){
+		hid2codestable[ind] = c;
+	}
 }
 
 export function hid2codes(hid: number): KeyCodes|null{
-    let arr = hid2codestable[hid];
-    if(!arr)
-        return null;
-    return arr2obj(arr);
+	let arr = hid2codestable[hid];
+	if(!arr)
+		return null;
+	return arr2obj(arr);
 }

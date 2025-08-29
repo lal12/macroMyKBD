@@ -1,10 +1,11 @@
 {
   "name": "macromykbd",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Enables you too react to keystrokes on multiple keyboards with macros via libusb.",
   "main": "build/server/start.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch-ui": "esbuild ./src/web/ui/index.tsx --bundle --format=esm --outfile=dist/bundle.js --watch"
   },
   "repository": {
     "type": "git",
@@ -21,17 +22,26 @@
   "author": "Luca Lindhorst <info@lucalindhorst.de>",
   "license": "MIT",
   "devDependencies": {
-    "@types/joi": "^14.3.0",
-    "@types/node": "^10.12.18",
-    "@types/usb": "^1.5.0",
-    "@types/yamljs": "^0.2.30",
-    "typescript": "^3.2.4"
+    "@fluentui/react": "^8.123.5",
+    "@fluentui/react-components": "^9.69.0",
+    "@fluentui/react-tabs": "^9.10.0",
+    "@types/ffi-napi": "^4.0.10",
+    "@types/node": "^24.3.0",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/ws": "^8.18.1",
+    "esbuild": "^0.25.9",
+    "esbuild-plugin-tsc": "^0.5.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "typescript": "^5.9.2"
   },
+  "type": "module",
   "dependencies": {
-    "hid-handler": "file:hid-handler",
-    "joi": "^14.3.1",
-    "sendinput": "^0.2.0",
-    "usb": "^1.5.0",
-    "yamljs": "^0.3.0"
+  "@fluentui/react-icons": "^2.0.0",
+    "express": "^5.1.0",
+    "koffi": "^2.14.0",
+    "usb": "^2.16.0",
+    "ws": "^8.18.3"
   }
 }

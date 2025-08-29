@@ -1,1 +1,0 @@
-node server\index.js
