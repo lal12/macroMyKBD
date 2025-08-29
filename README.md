@@ -15,6 +15,8 @@ So who needs this software then? Every PC power user who wishes to use a second 
 
 **v0.2 is currently in development and not compatible with v0.1**
 
+See here for [v0.1](https://github.com/lal12/macroMyKBD/tree/c7ca3ced647493e85fcb48c120f07e45c6c5cac0)
+
 A macro (in context of this document) is an action deployed on a keystroke. 
 Currently this can only be a batch command, however support for custom scripting with javascript is planned.
 
