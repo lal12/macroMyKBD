@@ -1,7 +1,7 @@
 import { WebSocket } from "ws";
-import { listAvailableKeyboards } from "../../kbd/hid-handler";
-import { mmkbdMain } from "../../main";
-import { ServerPacket, ClientPacket } from "../packets";
+import { listAvailableKeyboards } from "../../kbd/hid-handler.js";
+import { mmkbdMain } from "../../main.js";
+import type { ServerPacket, ClientPacket } from "../packets.js";
 
 let nextid = 0;
 function sendMsg(cl: WebSocket, msg: ServerPacket){

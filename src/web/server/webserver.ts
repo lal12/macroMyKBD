@@ -3,8 +3,8 @@ import FS from 'node:fs';
 import express from 'express';
 import http from 'http';
 import { WebSocketServer } from 'ws';
-import { ClientPacket, ServerPacket } from '../packets';
-import { handleWsMsg } from './ws-handling';
+import type { ClientPacket } from '../packets.js';
+import { handleWsMsg } from './ws-handling.js';
 
 
 const __dirname = Path.resolve(decodeURIComponent(new URL('.', import.meta.url).pathname.replace(/^\/([a-zA-Z]:)/, '$1')));

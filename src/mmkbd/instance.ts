@@ -1,6 +1,9 @@
-import { Action, ActionCfg } from "../events/action";
-import { Keyboard, KeyboardConf, KeyboardEvent, KeyboardIdentifier } from "../kbd/keyboard";
-import { Trigger, TriggerConf } from '../events/trigger';
+import { Action } from "../events/action.js";
+import type { ActionCfg } from "../events/action.js";
+import { Keyboard } from "../kbd/keyboard.js";
+import type { KeyboardConf, KeyboardIdentifier } from "../kbd/keyboard.js";
+import { Trigger } from '../events/trigger.js';
+import type { TriggerConf } from '../events/trigger.js';
 import {AsyncLocalStorage} from 'node:async_hooks'
 
 export interface MMKBDConfig{

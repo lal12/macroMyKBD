@@ -1,6 +1,8 @@
 import { WebUSB, WebUSBDevice } from 'usb';
-import { HidParser, ParsedReportData } from './hid-parser';
-import { createSingleEvent, SingleEvent } from '../lib/single-event';
+import { HidParser } from './hid-parser.js';
+import type { ParsedReportData } from './hid-parser.js';
+import { createSingleEvent } from '../lib/single-event.js';
+import type { SingleEvent } from '../lib/single-event.js';
 
 
 export const HID_CLASS = 0x03;
@@ -88,9 +90,9 @@ export interface DeviceIdentifier{
 }
 
 export class HidDev implements SingleEvent<ParsedReportData>, Disposable{
-	private _usb: WebUSBDevice;
+	private _usb!: WebUSBDevice;
 	private _cfg: HidDevCfg['indexes'] | null = null;
-	private _parser: HidParser;
+	private _parser!: HidParser;
 	public get id(): DeviceIdentifier{
 		return {
 			vendor: this._usb.vendorId,
@@ -153,7 +155,7 @@ export class HidDev implements SingleEvent<ParsedReportData>, Disposable{
 		this._dataEvt.emit(parsed);
 	}
 
-	public getFields(id: number){
+	public getFields(id: number) {
 		return this._parser.getFields(id);
 	}
 

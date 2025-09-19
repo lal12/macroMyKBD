@@ -1,4 +1,4 @@
-import './dispose'; // needs to be imported once somewhere
+import './dispose.js'; // needs to be imported once somewhere
 
 export interface SingleEvent<T = void>{
 	subscribe(handler: (event: T) => void): () => void;

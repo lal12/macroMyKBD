@@ -1,6 +1,7 @@
-import { hid2codes } from "./hid_ps2";
-import { Keyboard } from "./keyboard";
-import { KbdInput, KEYEVENTF_EXTENDEDKEY, KEYEVENTF_KEYUP, KEYEVENTF_SCANCODE, sendinputKbd } from "./sendinput";
+import { hid2codes } from "./hid_ps2.js";
+import { Keyboard } from "./keyboard.js";
+import { KEYEVENTF_EXTENDEDKEY, KEYEVENTF_KEYUP, KEYEVENTF_SCANCODE, sendinputKbd } from "./sendinput.js";
+import type { KbdInput } from "./sendinput.js";
 
 export function createPassthrough(kbd: Keyboard) {
 	const off = kbd.keystate.subscribe(evt => {

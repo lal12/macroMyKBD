@@ -1,4 +1,5 @@
-import { Keyboard, KeyboardEvent } from "../kbd/keyboard";
+import { Keyboard } from "../kbd/keyboard.js";
+import type { KeyboardEvent } from "../kbd/keyboard.js";
 
 export enum ActionType {
 	Cmd = 'cmd'

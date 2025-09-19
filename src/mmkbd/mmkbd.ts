@@ -1,12 +1,13 @@
-import { createWebserver } from "../web/server/webserver";
-import { MMKBDConfig, MMKBDInstance } from "./instance";
+import { createWebserver } from "../web/server/webserver.js";
+import { MMKBDInstance } from "./instance.js";
+import type { MMKBDConfig } from "./instance.js";
 import Path from "node:path";
 import FS from "node:fs/promises";
 
 const configPath = Path.join(process.env.APPDATA!, 'mmkbd', 'config.json');
 
 export class MMKBDMain{
-	private _instance: MMKBDInstance;
+	private _instance!: MMKBDInstance;
 	public get instance(): MMKBDInstance {
 		return this._instance;
 	}

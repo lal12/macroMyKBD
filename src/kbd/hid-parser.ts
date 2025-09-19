@@ -1,5 +1,5 @@
 // Define interfaces for a structured representation of the parsed descriptor.
-interface HidReportField {
+export interface HidReportField {
 	usagePage: number;
 	usage: number[];
 	logicalMin: number;
@@ -145,7 +145,7 @@ export class HidParser {
 						case 0xA0: // Collection
 							const newCollection: HidCollection = {
 								usagePage: this.globals.usagePage,
-								usage: this.locals.usages.length > 0 ? this.locals.usages[0] : 0,
+								usage: this.locals.usages.length > 0 ? this.locals.usages[0]! : 0,
 								type: this.getCollectionType(item.data),
 								children: [],
 								reportId: this.globals.reportId
@@ -236,7 +236,7 @@ export class HidParser {
 					value: value,
 					parsedValue: (field.logicalMax === 1 && field.logicalMin === 0 && field.reportSize === 1) ? (value === 1): value
 				});*/
-				parsedData.inputs.push(field.usage.length > 0 ? (value > 0 ? field.usage[i] : 0) : value);
+				parsedData.inputs.push(field.usage.length > 0 ? (value > 0 ? field.usage[i]! : 0) : value);
 			}
 		}
 		return parsedData;

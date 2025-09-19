@@ -1,6 +1,6 @@
-import { Keyboard, KeyboardEvent } from '../kbd/keyboard';
-import { createSingleEvent } from '../lib/single-event';
-import { getMMKBDInstance } from '../mmkbd/instance';
+import { Keyboard } from '../kbd/keyboard.js';
+import type { KeyboardEvent } from '../kbd/keyboard.js';
+import { createSingleEvent } from '../lib/single-event.js';
 
 export interface TriggerConf{
 	keyboard: string;
