@@ -3,12 +3,6 @@ import koffi from 'koffi';
 const user32 = koffi.load('user32.dll');
 const kernel32 = koffi.load('kernel32.dll')
 
-// Define Windows data types for clarity
-const DWORD = 'uint32';
-const WORD = 'uint16';
-const LONG = 'int32';
-const ULONG_PTR = 'uint64'; // Pointer-sized unsigned integer
-
 // Define constants from the Windows API
 const INPUT_MOUSE = 0;
 const INPUT_KEYBOARD = 1;
@@ -26,30 +20,30 @@ const MOUSEEVENTF_RIGHTDOWN = 0x0008;
 const MOUSEEVENTF_RIGHTUP = 0x0010;
 
 const KEYBDINPUT = koffi.struct('KEYBDINPUT', {
-	wVk: WORD,
-	wScan: WORD,
-	dwFlags: DWORD,
-	time: DWORD,
-	dwExtraInfo: ULONG_PTR
+	wVk: 'WORD',
+	wScan: 'WORD',
+	dwFlags: 'DWORD',
+	time: 'DWORD',
+	dwExtraInfo: 'ULONG_PTR'
 });
 const INPUT_UNION = koffi.union('INPUT_UNION', {
 	mi: koffi.struct({
-		dx: LONG,
-		dy: LONG,
-		mouseData: DWORD,
-		dwFlags: DWORD,
-		time: DWORD,
-		dwExtraInfo: ULONG_PTR
+		dx: 'LONG',
+		dy: 'LONG',
+		mouseData: 'DWORD',
+		dwFlags: 'DWORD',
+		time: 'DWORD',
+		dwExtraInfo: 'ULONG_PTR'
 	}),
 	ki: KEYBDINPUT,
 	hi: koffi.struct({
-		uMsg: DWORD,
-		wParamL: WORD,
-		wParamH: WORD
+		uMsg: 'DWORD',
+		wParamL: 'WORD',
+		wParamH: 'WORD'
 	})
 });
 const INPUT = koffi.struct('INPUT', {
-	type: DWORD,
+	type: 'DWORD',
 	u: INPUT_UNION
 });
 

@@ -22,7 +22,6 @@ Currently this can only be a batch command, however support for custom scripting
 
 ## TODO v0.2
 - GUI completion
-- Add a toolbar icon
 - Script actions
 - Repeat keys on passthrough
 - install driver automatically, so the manual driver installation via zadig isn't needed anymore
