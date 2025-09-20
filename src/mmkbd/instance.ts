@@ -1,26 +1,8 @@
 import { Action } from "../events/action.js";
-import type { ActionCfg } from "../events/action.js";
 import { Keyboard } from "../kbd/keyboard.js";
-import type { KeyboardConf, KeyboardIdentifier } from "../kbd/keyboard.js";
 import { Trigger } from '../events/trigger.js';
-import type { TriggerConf } from '../events/trigger.js';
 import {AsyncLocalStorage} from 'node:async_hooks'
-
-export interface MMKBDConfig{
-	ver: 1,
-	keyboards: {
-		[name: string]: {
-			id: KeyboardIdentifier;
-			conf: KeyboardConf;
-		}
-	};
-	actions: {
-		[id: string]: {
-			triggers: TriggerConf[];
-			action: ActionCfg;
-		}
-	};
-};
+import type { MMKBDConfig } from "./config.js";
 
 const mmkbdInst = new AsyncLocalStorage<MMKBDInstance>();
 export const getMMKBDInstance = () => mmkbdInst.getStore() as MMKBDInstance;

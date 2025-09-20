@@ -1,19 +1,7 @@
 import { Keyboard } from "../kbd/keyboard.js";
-import type { KeyboardEvent } from "../kbd/keyboard.js";
+import type { KeyboardEvent } from "../kbd/types.js";
+import { ActionType, type ActionCfg } from "./events.js";
 
-export enum ActionType {
-	Cmd = 'cmd'
-}
-
-interface ActionCfgBase{
-	type: ActionType;
-}
-
-export interface ActionCfgCmd extends ActionCfgBase{
-	cmd: string;
-}
-
-export type ActionCfg = ActionCfgCmd;
 
 export class Action implements Disposable{
 	constructor(private _cfg: ActionCfg) {

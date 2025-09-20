@@ -1,5 +1,4 @@
 import React from 'react';
-import { useData } from "./ws";
 import { Tab, TabList, TabValue, FluentProvider, webLightTheme, webDarkTheme } from "@fluentui/react-components";
 import { KeyboardTab } from './keyboards';
 import { ActionTab } from './actions';

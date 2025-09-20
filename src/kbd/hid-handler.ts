@@ -3,6 +3,7 @@ import { HidParser } from './hid-parser.js';
 import type { ParsedReportData } from './hid-parser.js';
 import { createSingleEvent } from '../lib/single-event.js';
 import type { SingleEvent } from '../lib/single-event.js';
+import type { DeviceIdentifier } from './types.js';
 
 
 export const HID_CLASS = 0x03;
@@ -81,12 +82,6 @@ export async function initKeyboardDev(dev: WebUSBDevice): Promise<HidDevCfg>{
 		indexes: [cfgI, ifcI, altI, inEndpoint.endpointNumber],
 		hidReport: desc
 	};
-}
-
-export interface DeviceIdentifier{
-	vendor: number;
-	product: number;
-	serial?: string;
 }
 
 export class HidDev implements SingleEvent<ParsedReportData>, Disposable{

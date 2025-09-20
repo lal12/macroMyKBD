@@ -1,5 +1,5 @@
-import type { KeyboardEvent, KeyboardIdentifier } from "../kbd/keyboard";
-import type { MMKBDConfig } from "../mmkbd/instance";
+import type { KeyboardIdentifier } from "../kbd/types.d.ts";
+import type { MMKBDConfig } from "../mmkbd/config.d.ts";
 
 export interface Data{
 	'used-kbds': {
@@ -26,7 +26,12 @@ export type ServerPacketData<T extends keyof Data = keyof Data> = PacketBase & {
 export interface ServerPacketKeyEvt extends PacketBase{
 	type: 'key-evt';
 	keyboard: string;
-	event: KeyboardEvent;
+	event: {
+		ts: number;
+		downs: number[];
+		pressed: Record<number, {since: number}>;
+		ups: number[];
+	};
 }
 
 export type ServerPacket = ServerPacketKeyEvt | ServerPacketData;

@@ -1,22 +1,8 @@
 import { HidDev } from "./hid-handler.js";
-import type { DeviceIdentifier } from "./hid-handler.js";
 import { createPassthrough } from "./passthrough.js";
 import { createSingleEvent } from "../lib/single-event.js";
+import type { KeyboardConf, KeyboardEvent, KeyboardIdentifier, KeyboardState } from "./types.js";
 
-export type KeyboardIdentifier = DeviceIdentifier;
-
-export interface KeyboardConf{
-	passthrough: boolean;
-}
-
-type KeyboardState = Map<number, {since: number}>;
-
-export interface KeyboardEvent{
-	ts: number;
-	downs: Set<number>;
-	pressed: KeyboardState;
-	ups: Set<number>;
-}
 
 export class Keyboard implements Disposable{
 	private _dev!: HidDev;

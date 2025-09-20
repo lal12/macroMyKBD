@@ -1,6 +1,6 @@
 import { createWebserver } from "../web/server/webserver.js";
 import { MMKBDInstance } from "./instance.js";
-import type { MMKBDConfig } from "./instance.js";
+import type { MMKBDConfig } from "./config.js";
 import Path from "node:path";
 import FS from "node:fs/promises";
 import { TrayIcon } from "../tray/tray.js";

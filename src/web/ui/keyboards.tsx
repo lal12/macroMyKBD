@@ -22,7 +22,7 @@ import {
 	TableHeaderCell,
 	TableBody,
 } from '@fluentui/react-components';
-import { Data } from '../packets';
+import type { Data } from '../packets';
 
 const toHex16 = (n: number) => `0x${Math.max(0, Math.min(0xffff, n | 0)).toString(16).toUpperCase().padStart(4, '0')}`;
 const parseNum = (val: string) => {

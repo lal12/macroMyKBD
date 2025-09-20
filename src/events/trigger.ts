@@ -1,13 +1,8 @@
 import { Keyboard } from '../kbd/keyboard.js';
-import type { KeyboardEvent } from '../kbd/keyboard.js';
+import type { KeyboardEvent } from '../kbd/types.js';
 import { createSingleEvent } from '../lib/single-event.js';
+import type { TriggerConf } from './events.js';
 
-export interface TriggerConf{
-	keyboard: string;
-	keys: number[];
-	on: 'up'|'down';
-	exact: boolean;
-};
 
 export class Trigger implements Disposable{
 	private _cleanup: Array<() => void> = [];
