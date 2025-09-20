@@ -65,9 +65,9 @@ await FS.copyFile(Path.join(__dirname, 'node_modules/koffi/build/koffi/win32_x64
 await FS.copyFile(Path.join(__dirname, 'node_modules/usb/prebuilds/win32-x64/node.napi.node'), __dirname + '/dist/usb.node');
 await FS.writeFile(__dirname + '/dist/package.json', `{"type": "commonjs"}`);
 await FS.writeFile(__dirname + '/dist/start.bat', `@echo off
-start node.exe main.js
+powershell.exe -WindowStyle Hidden -Command "%~dp0node.exe '%~dp0main.js'"
 `);
 
 const version = process.argv[2] || 'dev';
+await FS.unlink(__dirname + '/mmkbd-' + version + '.zip').catch(() => {});
 await runCmd('Compress-Archive', ['-Path', __dirname + '/dist/*', '-DestinationPath', __dirname + '/mmkbd-' + version + '.zip'], "powershell.exe");
-
