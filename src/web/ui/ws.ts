@@ -10,11 +10,24 @@ con.onmessage = (event) => {
 	msgHdl.emit(msg);
 	console.debug('msg in', msg);
 };
-export const connected = new Promise((resolve) => {
-	con.onopen = () => {
-		resolve(con);
-	};
-});
+export const useConnected = () => {
+	const [connected, setConnected] = useState(con.readyState === WebSocket.OPEN);
+	const [onceConnected, setOnceConnected] = useState(false);
+	useEffect(() => {
+		const hdl = () => {
+			const isOpen = con.readyState === WebSocket.OPEN;
+			setConnected(isOpen);
+			if(isOpen) setOnceConnected(true);
+		};
+		con.addEventListener('open', hdl);
+		con.addEventListener('close', hdl);
+		return () => {
+			con.removeEventListener('open', hdl);
+			con.removeEventListener('close', hdl);
+		};
+	}, []);
+	return [connected, onceConnected];
+};
 
 let nextId = 1;
 export function sendMsg<T extends ClientPacket>(pkt: T){

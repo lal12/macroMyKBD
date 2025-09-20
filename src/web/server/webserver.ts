@@ -7,17 +7,22 @@ import type { ClientPacket, ServerPacket } from '../packets.js';
 import { mmkbdMain } from '../../main.js';
 import { listAvailableKeyboards } from '../../kbd/hid-handler.js';
 
+export const webPort = 17654;
 
 const __dirname = Path.resolve(decodeURIComponent(new URL('.', import.meta.url).pathname.replace(/^\/([a-zA-Z]:)/, '$1')));
 const publicPath = Path.join(__dirname, '../../../dist');
 
 const bundleJs = FS.readFileSync(Path.join(publicPath, 'bundle.js'), 'utf-8');
+const randomCRSF = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const indexHtml = `<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>MacroMyKBD</title>
+		<script>
+			document.cookie = "csrf=${randomCRSF}; SameSite=Strict";
+		</script>
 		<script src="bundle.js"></script>
 		<style>
 		html, body, #root{padding: 0; margin: 0; width: 100vw; height: 100vh;}
@@ -49,15 +54,20 @@ export function createWebserver(){
 
 	const wss = new WebSocketServer({ server, path: '/ws' });
 
-	wss.on('connection', (ws) => {
+	wss.on('connection', (ws, req) => {
+		if(!req.headers['cookie']?.includes(`csrf=${randomCRSF}`)){
+			console.warn('Connection rejected due to missing or invalid CSRF cookie');
+			ws.close();
+			return;
+		}
 		const ctx: WSCtx = {
 			handles: new Map()
 		};
 		new ConHandler(ws);
 	});
 
-	server.listen(3000, '127.0.0.1', () => {
-		console.info('Server listening on http://localhost:3000');
+	server.listen(webPort, '127.0.0.1', () => {
+		console.info('Server listening on http://localhost:' + webPort);
 	});
 
 	return {

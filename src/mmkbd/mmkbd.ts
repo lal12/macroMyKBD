@@ -4,6 +4,7 @@ import type { MMKBDConfig } from "./config.js";
 import Path from "node:path";
 import FS from "node:fs/promises";
 import { TrayIcon } from "../tray/tray.js";
+import { launchSettingsWindow } from "../tray/settings.js";
 
 const configPath = Path.join(process.env.APPDATA!, 'mmkbd', 'config.json');
 
@@ -18,7 +19,11 @@ export class MMKBDMain{
 	private constructor() {
 		this._tray.addMenuEntry('Settings', () => {
 			console.info('User requested settings via tray menu');
-			//TODO
+			if(this._webserver.wss.clients.size > 0){
+				console.info('Settings window already open, bringing to front');
+			}else{
+				launchSettingsWindow();
+			}
 		});
 		this._tray.addMenuEntry('Reload', () => {
 			console.info('User reloading process via tray menu');

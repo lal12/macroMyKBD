@@ -38,7 +38,6 @@
   },
   "type": "module",
   "dependencies": {
-  "@fluentui/react-icons": "^2.0.0",
     "express": "^5.1.0",
     "koffi": "^2.14.0",
     "usb": "^2.16.0",

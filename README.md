@@ -21,7 +21,6 @@ A macro (in context of this document) is an action deployed on a keystroke.
 Currently this can only be a batch command, however support for custom scripting with javascript is planned.
 
 ## TODO v0.2
-- GUI completion
 - Script actions
 - Repeat keys on passthrough
 - install driver automatically, so the manual driver installation via zadig isn't needed anymore
