@@ -1,4 +1,4 @@
-import { Action } from "../events/action.js";
+import { createAction, type Action } from "../events/action.js";
 import { Keyboard } from "../kbd/keyboard.js";
 import { Trigger } from '../events/trigger.js';
 import {AsyncLocalStorage} from 'node:async_hooks'
@@ -44,7 +44,7 @@ export class MMKBDInstance implements Disposable{
 				this._kbds.set(name, kbd);
 			}
 			for (const { action, triggers: triggerCfgs } of Object.values(this._cfg.actions)) {
-				const act = new Action(action);
+				const act = createAction(action);
 				const triggers: Trigger[] = triggerCfgs.map(cfg => {
 					const kbd = this.getKeyboard(cfg.keyboard);
 					if(!kbd){
@@ -52,6 +52,11 @@ export class MMKBDInstance implements Disposable{
 					}
 					const trig = new Trigger(cfg, kbd);
 					trig.evt.subscribe(evt => {
+						console.debug('Trigger fired', {cfg, evt});
+						if(this._pausedKbd.has(cfg.keyboard)){
+							console.debug('... but keyboard is paused, ignoring');
+							return;
+						}
 						act.execute(kbd, evt);
 					});
 					return trig;
@@ -76,5 +81,6 @@ export class MMKBDInstance implements Disposable{
 		for(const kbd of this._kbds.values()){
 			kbd[Symbol.dispose]();
 		}
+		this._pausedKbd.clear();
 	}
 };

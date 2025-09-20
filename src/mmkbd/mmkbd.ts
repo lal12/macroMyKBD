@@ -20,6 +20,10 @@ export class MMKBDMain{
 			console.info('User requested settings via tray menu');
 			//TODO
 		});
+		this._tray.addMenuEntry('Reload', () => {
+			console.info('User reloading process via tray menu');
+			this._init();
+		});
 		this._tray.addMenuEntry('Exit', () => {
 			console.info('User ended process via tray menu');
 			process.exit(0);
