@@ -78,7 +78,6 @@ const UpdateWindow = user32.func('bool UpdateWindow(HWND hWnd)');
 const CreateIconFromResourceEx = user32.func('HICON CreateIconFromResourceEx(_In_ unsigned char* presbits, _In_ DWORD dwResSize, _In_ bool fIcon, _In_ DWORD dwVer,_In_ int cxDesired, _In_ int  cyDesired, _In_ uint Flags)');
 const LookupIconIdFromDirectoryEx = user32.func('int LookupIconIdFromDirectoryEx(_In_ unsigned char* presbits, _In_ bool fIcon, _In_ int cxDesired, _In_ int cyDesired, _In_ uint Flags)');
 const DestroyIcon = user32.func('bool DestroyIcon(HICON hIcon)');
-koffi.disposable('HICON', ic => {console.log('asdasd'); ic ? DestroyIcon(ic) : null});
 
 koffi.struct('MSG', {
 	hwnd: 'HWND',
@@ -109,15 +108,17 @@ const GetModuleHandleW = kernel32.func('HMODULE GetModuleHandleW(LPCWSTR lpModul
 const shell32 = koffi.load('shell32.dll');
 const Shell_NotifyIconW = shell32.func('bool Shell_NotifyIconW(DWORD dwMessage, NOTIFYICONDATAW* lpData)');
 
-const menuEntries = [
-	{ title: 'Settings' },
-	{ title: 'Exit' },
-]
-
 export class TrayIcon implements Disposable {
 	private _className = 'NodeKoffiTrayWindowClass';
 	private hwnd: any;
 	private nid: any = {};
+
+	private _menuId = 1;
+	private _menuEntries = new Map<number, { title: string, cmd: ()=>void }>();
+	public addMenuEntry(title: string, cmd: ()=>void) {
+		this._menuEntries.set(this._menuId++, { title, cmd });
+		return () => this._menuEntries.delete(this._menuId - 1);
+	}
 
 	constructor(private tooltip: string = 'Node.js Tray Icon') {}	
 	private _createWindow(){
@@ -136,8 +137,9 @@ export class TrayIcon implements Disposable {
 					}
 					return 0;
 				case WM_COMMAND:
-					if(menuEntries[wParam - 1]){
-						console.log('menu item clicked:', menuEntries[wParam - 1]);
+					if(this._menuEntries.has(wParam)){
+						const entry = this._menuEntries.get(wParam)!;
+						entry.cmd();
 					}
 					return 0;
 				case WM_UNINITMENUPOPUP:
@@ -170,7 +172,6 @@ export class TrayIcon implements Disposable {
 		if (wclass == 0) {
 			throw new Error('Failed to register window class: ' + GetLastError());
 		}
-		console.log('registered class');
 
 		this.hwnd = CreateWindowExW(
 			0,
@@ -180,18 +181,17 @@ export class TrayIcon implements Disposable {
 			CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 			null, null, hInstance, null
 		);
-
 		if(!this.hwnd) {
 			throw new Error('Failed to create hidden window.');
 		}
-
-		console.log('created window', this.hwnd);
-
 		return this.hwnd!;
 	}
 
 	private _ival?: NodeJS.Timeout;
+	private _created = false;
 	public async create(): Promise<void> {
+		if(this._created) return;
+		this._created = true;
 		this._createWindow();
 		if(!UpdateWindow(this.hwnd!)){
 			throw new Error('Failed to update window: ' + GetLastError());
@@ -241,6 +241,10 @@ export class TrayIcon implements Disposable {
 			DestroyMenu(this._menu);
 			this._menu = null;
 		}
+		if(this.nid.hIcon){
+			DestroyIcon(this.nid.hIcon);
+			this.nid.hIcon = null;
+		}
 	}
 
 	private _menu: any;
@@ -253,15 +257,14 @@ export class TrayIcon implements Disposable {
 		if(!this._menu){
 			throw new Error('Failed to create popup menu: ' + GetLastError());
 		}
-		for(let i = 0; i < menuEntries.length; i++){
-			AppendMenuW(this._menu, MF_STRING, i + 1, menuEntries[i]!.title);
+		for(const [id, e] of this._menuEntries) {
+			AppendMenuW(this._menu, MF_STRING, id, e.title);
 		}
 
 		const pt = {x: 0, y: 0};
 		if(!GetCursorPos(pt)){
 			throw new Error('Failed to get cursor position: ' + GetLastError());
 		}
-		console.log('cursor pos', pt);
 		
 		if(!SetForegroundWindow(hwnd)){
 			throw new Error('Failed to set foreground window: ' + GetLastError());

@@ -1,4 +1,5 @@
 import koffi from 'koffi';
+import '../lib/ffi-types.js';
 
 const user32 = koffi.load('user32.dll');
 const kernel32 = koffi.load('kernel32.dll')

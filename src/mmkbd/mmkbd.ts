@@ -3,6 +3,7 @@ import { MMKBDInstance } from "./instance.js";
 import type { MMKBDConfig } from "./instance.js";
 import Path from "node:path";
 import FS from "node:fs/promises";
+import { TrayIcon } from "../tray/tray.js";
 
 const configPath = Path.join(process.env.APPDATA!, 'mmkbd', 'config.json');
 
@@ -12,8 +13,18 @@ export class MMKBDMain{
 		return this._instance;
 	}
 	private _webserver = createWebserver();
+	private _tray = new TrayIcon('MMKBD');
 
-	private constructor() {}
+	private constructor() {
+		this._tray.addMenuEntry('Settings', () => {
+			console.info('User requested settings via tray menu');
+			//TODO
+		});
+		this._tray.addMenuEntry('Exit', () => {
+			console.info('User ended process via tray menu');
+			process.exit(0);
+		});
+	}
 	private async _init(){
 		let conf: MMKBDConfig;
 		try{
@@ -39,6 +50,7 @@ export class MMKBDMain{
 			this._instance = undefined!;
 		}
 		this._instance = MMKBDInstance.create(conf);
+		this._tray.create();
 	}
 	public static async create(): Promise<MMKBDMain> {
 		const inst = new MMKBDMain();
