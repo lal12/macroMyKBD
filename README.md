@@ -20,6 +20,18 @@ See here for [v0.1](https://github.com/lal12/macroMyKBD/tree/c7ca3ced647493e85fc
 A macro (in context of this document) is an action deployed on a keystroke. 
 Currently this can only be a batch command, however support for custom scripting with javascript is planned.
 
+## Installation
+
+Download the latest release from the [releases page](https://github.com/lal12/macroMyKBD/releases).
+Unzip the archive and run `start.bat` to start the program.
+In the Taskbar you will see a status icon for macroMyKBD, right click it and select "Settings" to launch the configuration UI in a browser.
+Right click the icon again and select "Exit" to close the program.
+
+### Driver installation
+
+A quick Video-Tutorial is also available: https://youtu.be/k5ltJ_6T3qI (by @KGT1). It is only for v0.1, but the driver installation is the same.
+Download [Zadig](https://zadig.akeo.ie/) and execute it.
+
 ## TODO v0.2
 - Script actions
 - Repeat keys on passthrough
