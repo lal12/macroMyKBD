@@ -18,6 +18,21 @@ export class MMKBDInstance implements Disposable{
 
 	private _actions: Array<{action: Action, triggers: Trigger[]}> = [];
 
+	private _pausedKbd = new Set<string>();
+	public pauseKbd(kbdId: string){
+		const kbd = this._kbds.get(kbdId);
+		if(!kbd) return;
+		kbd.stopPassthrough();
+		this._pausedKbd.add(kbdId);
+	}
+	public resumeKbd(kbdId: string){
+		const kbd = this._kbds.get(kbdId);
+		if(kbd && kbd.cfg.passthrough){
+			kbd.startPassthrough();
+		}
+		this._pausedKbd.delete(kbdId);
+	}
+
 	private constructor(private _cfg: MMKBDConfig) {}
 	public get cfg(): MMKBDConfig {
 		return this._cfg;

@@ -18,8 +18,36 @@ export class Keyboard implements Disposable{
 		return this._dev.id;
 	}
 
+	private _passthrough: null | ReturnType<typeof createPassthrough> = null;
+	public get passthroughActive(){
+		return this._passthrough != null;
+	}
+	public stopPassthrough(){
+		console.info('Stop passthrough for', this.id);
+		if(!this._passthrough){
+			return false;
+		}
+		this._passthrough.close();
+		this._passthrough = null;
+		return true;
+	}
+	public startPassthrough(){
+		console.info('Start passthrough for', this.id);
+		if(this._passthrough){
+			return false;
+		}
+		this._passthrough = createPassthrough(this);
+		return true;
+	}
+
+	private _cfg!: KeyboardConf;
+	public get cfg(){
+		return this._cfg;
+	}
+
 	public static async create(id: KeyboardIdentifier, cfg: KeyboardConf){
 		const kbd = new Keyboard();
+		kbd._cfg = cfg;
 		kbd._dev = await HidDev.create(id);
 		const off = kbd._dev.subscribe(data => {
 			const cur = new Set(data.inputs.filter(k => k > 0));
@@ -50,8 +78,7 @@ export class Keyboard implements Disposable{
 		});
 		kbd._cleanup.push(off);
 		if(cfg.passthrough){
-			const h = createPassthrough(kbd);
-			kbd._cleanup.push(() => h.close());
+			kbd.startPassthrough();
 		}
 		return kbd;
 	}
@@ -62,6 +89,7 @@ export class Keyboard implements Disposable{
 
 	[Symbol.dispose](){
 		this.close();
+		this.stopPassthrough();
 		for(const cleanup of this._cleanup){
 			cleanup();
 		}

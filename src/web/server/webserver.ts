@@ -175,15 +175,21 @@ class ConHandler implements Disposable{
 								}
 							});
 						});
-						this._kbdSubs.set(msg.keyboard, off);
+						mmkbdMain.instance.pauseKbd(msg.keyboard);
+						this._kbdSubs.set(msg.keyboard, () => {
+							mmkbdMain.instance?.resumeKbd(msg.keyboard);
+							off();
+						});
 					}
 				}
 				break;
-			case 'unsub-kbd':
-				if(this._kbdSubs.has(msg.keyboard)){
-					this._kbdSubs.get(msg.keyboard)!();
+			case 'unsub-kbd':{
+				const off = this._kbdSubs.get(msg.keyboard);
+				if(off){
+					off();
 					this._kbdSubs.delete(msg.keyboard);
 				}
+			}
 				break;
 			default:
 				console.error(`Unknown action: ${(msg as any).type}`);
