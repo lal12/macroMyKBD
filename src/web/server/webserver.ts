@@ -1,18 +1,17 @@
 import Path from 'node:path';
-import FS from 'node:fs';
+import FS, { glob } from 'node:fs';
 import express from 'express';
 import http from 'http';
 import WebSocket, { WebSocketServer } from 'ws';
 import type { ClientPacket, ServerPacket } from '../packets.js';
-import { mmkbdMain } from '../../main.js';
 import { listAvailableKeyboards } from '../../kbd/hid-handler.js';
+import { MMKBDMain } from '../../mmkbd/mmkbd.js';
 
 export const webPort = 17654;
 
-const __dirname = Path.resolve(decodeURIComponent(new URL('.', import.meta.url).pathname.replace(/^\/([a-zA-Z]:)/, '$1')));
-const publicPath = Path.join(__dirname, '../../../dist');
-
-const bundleJs = FS.readFileSync(Path.join(publicPath, 'bundle.js'), 'utf-8');
+declare const _BUNDLE_: boolean;
+const bundlejsPath = Path.join(__dirname, _BUNDLE_ ? '.' : '../../../dist', 'bundle.js');
+const bundleJs = FS.readFileSync(bundlejsPath, 'utf-8');
 const randomCRSF = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const indexHtml = `<!DOCTYPE html>
 <html>
@@ -35,15 +34,15 @@ const indexHtml = `<!DOCTYPE html>
 
 
 
-export function createWebserver(){
+export function createWebserver(main: MMKBDMain){
 	const app = express();
 
 	app.get('/', (req, res) => {
 		res.header('Content-Type', 'text/html').send(indexHtml);
 	});
 	app.get('/bundle.js', (req, res) => {
-		if(import.meta.url.endsWith('.ts')){
-			const bundleJs2 = FS.readFileSync(Path.join(publicPath, 'bundle.js'), 'utf-8');
+		if(__filename.endsWith('.ts')){
+			const bundleJs2 = FS.readFileSync(bundlejsPath, 'utf-8');
 			res.header('Content-Type', 'application/javascript').send(bundleJs2);
 		}else{
 			res.header('Content-Type', 'application/javascript').send(bundleJs);
@@ -63,7 +62,7 @@ export function createWebserver(){
 		const ctx: WSCtx = {
 			handles: new Map()
 		};
-		new ConHandler(ws);
+		new ConHandler(ws, main);
 	});
 
 	server.listen(webPort, '127.0.0.1', () => {
@@ -88,7 +87,7 @@ interface WSCtx{
 class ConHandler implements Disposable{
 	private _kbdSubs = new Map<string, () => void>();
 
-	constructor(private _con: WebSocket) {
+	constructor(private _con: WebSocket, private _main: MMKBDMain) {
 		_con.on('close', () => this[Symbol.dispose]());
 		_con.on('message', (message) => {
 			this.handleWsMsg(JSON.parse(message.toString()) as ClientPacket);
@@ -112,13 +111,13 @@ class ConHandler implements Disposable{
 			case 'get':
 				switch(msg.key){
 					case 'config':
-						if(mmkbdMain.instance){
+						if(this._main.instance){
 							this.sendMsg({
 								type: 'data',
 								key: 'config',
 								id: 0,
 								respTo: msg.id,
-								data: mmkbdMain.instance.cfg
+								data: this._main.instance.cfg
 							});
 						}
 						break;
@@ -134,13 +133,13 @@ class ConHandler implements Disposable{
 						});
 					break;
 					case 'used-kbds':
-						if(mmkbdMain.instance){
+						if(this._main.instance){
 							this.sendMsg({
 								type: 'data',
 								key: 'used-kbds',
 								id: 0,
 								respTo: msg.id,
-								data: Object.fromEntries(Array.from(mmkbdMain.instance.keyboards.entries()).map(([name, kbd]) => [name, kbd.id]))
+								data: Object.fromEntries(Array.from(this._main.instance.keyboards.entries()).map(([name, kbd]) => [name, kbd.id]))
 							});
 						}
 						break;
@@ -152,15 +151,15 @@ class ConHandler implements Disposable{
 			case 'set':
 				switch(msg.key){
 					case 'config':
-						if(mmkbdMain.instance){
+						if(this._main.instance){
 							console.info('saving config...')
-							await mmkbdMain.saveConfig(msg.data);
+							await this._main.saveConfig(msg.data);
 							this.sendMsg({
 								type: 'data',
 								key: 'config',
 								id: 0,
 								respTo: msg.id,
-								data: mmkbdMain.instance.cfg
+								data: this._main.instance.cfg
 							});
 						}
 						break;
@@ -169,8 +168,8 @@ class ConHandler implements Disposable{
 				}
 				break;
 			case 'sub-kbd':
-				if(mmkbdMain.instance){
-					const kbd = mmkbdMain.instance.keyboards.get(msg.keyboard);
+				if(this._main.instance){
+					const kbd = this._main.instance.keyboards.get(msg.keyboard);
 					if(kbd){
 						const off = kbd.keystate.subscribe(evt => {
 							this.sendMsg({
@@ -185,9 +184,9 @@ class ConHandler implements Disposable{
 								}
 							});
 						});
-						mmkbdMain.instance.pauseKbd(msg.keyboard);
+						this._main.instance.pauseKbd(msg.keyboard);
 						this._kbdSubs.set(msg.keyboard, () => {
-							mmkbdMain.instance?.resumeKbd(msg.keyboard);
+							this._main.instance?.resumeKbd(msg.keyboard);
 							off();
 						});
 					}

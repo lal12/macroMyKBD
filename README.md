@@ -24,4 +24,3 @@ Currently this can only be a batch command, however support for custom scripting
 - Script actions
 - Repeat keys on passthrough
 - install driver automatically, so the manual driver installation via zadig isn't needed anymore
-- Bundling for lesser files

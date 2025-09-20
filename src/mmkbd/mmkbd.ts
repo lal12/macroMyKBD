@@ -13,7 +13,7 @@ export class MMKBDMain{
 	public get instance(): MMKBDInstance {
 		return this._instance;
 	}
-	private _webserver = createWebserver();
+	private _webserver = createWebserver(this);
 	private _tray = new TrayIcon('MMKBD');
 
 	private constructor() {

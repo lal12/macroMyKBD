@@ -5,7 +5,9 @@
   "main": "build/server/start.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch-ui": "esbuild ./src/web/ui/index.tsx --bundle --format=esm --outfile=dist/bundle.js --tsconfig=./src/web/ui/tsconfig.json --watch "
+    "watch-ui": "esbuild ./src/web/ui/index.tsx --bundle --format=esm --outfile=dist/bundle.js --tsconfig=./src/web/ui/tsconfig.json --watch ",
+    "build-ui": "esbuild ./src/web/ui/index.tsx --bundle --format=esm --outfile=dist/bundle.js --tsconfig=./src/web/ui/tsconfig.json",
+    "bundle": "node bundle.mjs"
   },
   "repository": {
     "type": "git",
