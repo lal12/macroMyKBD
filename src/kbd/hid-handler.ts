@@ -84,7 +84,7 @@ export async function initKeyboardDev(dev: WebUSBDevice): Promise<HidDevCfg>{
 	};
 }
 
-export class HidDev implements SingleEvent<ParsedReportData>, Disposable{
+export class HidDev implements SingleEvent<ParsedReportData>, AsyncDisposable{
 	private _usb!: WebUSBDevice;
 	private _cfg: HidDevCfg['indexes'] | null = null;
 	private _parser!: HidParser;
@@ -127,6 +127,9 @@ export class HidDev implements SingleEvent<ParsedReportData>, Disposable{
 	}
 
 	private async _pollKeyboard(){
+		if(!this._run){
+			return;
+		}
 		const [cfgI, ifcI, altI, inEndI] = this._cfg!;
 		try {
 			const result = await this._usb.transferIn(inEndI, 8); // 8 bytes for keyboard report
@@ -161,8 +164,8 @@ export class HidDev implements SingleEvent<ParsedReportData>, Disposable{
 		return instance;
 	}
 
-	[Symbol.dispose](){
+	async [Symbol.asyncDispose](){
 		this.stop();
-		this._usb.close();
+		await this._usb.close().catch(e => {console.error('Error closing USB device', e)});
 	}
 }

@@ -4,7 +4,7 @@ import { createSingleEvent } from "../lib/single-event.js";
 import type { KeyboardConf, KeyboardEvent, KeyboardIdentifier, KeyboardState } from "./types.js";
 
 
-export class Keyboard implements Disposable{
+export class Keyboard implements AsyncDisposable{
 	private _dev!: HidDev;
 	private _cleanup: Array<() => void> = [];
 	private constructor(){}
@@ -83,13 +83,10 @@ export class Keyboard implements Disposable{
 		return kbd;
 	}
 
-	public close(){
+	async [Symbol.asyncDispose](){
 		this._dev.stop();
-	}
-
-	[Symbol.dispose](){
-		this.close();
 		this.stopPassthrough();
+		await this._dev[Symbol.asyncDispose]();
 		for(const cleanup of this._cleanup){
 			cleanup();
 		}

@@ -50,8 +50,9 @@ export class MMKBDMain{
 		}
 		console.debug('config', conf);
 		if(this._instance){
-			this._instance[Symbol.dispose]();
+			await this._instance[Symbol.asyncDispose]();
 			this._instance = undefined!;
+			await new Promise(res => setTimeout(res, 500)); // wait a bit to let things close properly
 		}
 		this._instance = MMKBDInstance.create(conf);
 		this._tray.create();
