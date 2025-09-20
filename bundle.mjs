@@ -68,3 +68,6 @@ await FS.writeFile(__dirname + '/dist/start.bat', `@echo off
 start node.exe main.js
 `);
 
+const version = process.argv[2] || 'dev';
+await runCmd('Compress-Archive', ['-Path', __dirname + '/dist/*', '-DestinationPath', __dirname + '/mmkbd-' + version + '.zip'], "powershell.exe");
+
